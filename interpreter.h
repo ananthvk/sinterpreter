@@ -23,6 +23,7 @@ class Interpreter
             current_pos++;
         }
     }
-    void expression();
+    int expression();
     Token expect(TokenType type);
+    int compute(int lhs, int rhs, Token op);
 };

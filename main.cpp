@@ -9,7 +9,12 @@ int main()
         if(line == "exit")
             break;
         Interpreter inter(line);
-        inter.expression();
+        try{
+        std::cout<<inter.expression()<<"\n";
+        }
+        catch(std::exception &e){
+            std::cerr<<e.what()<<" Syntax Error!\n";
+        }
         std::cout<<">>";
         /*
         Token tok = inter.get_next_token();

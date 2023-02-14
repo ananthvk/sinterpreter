@@ -1,11 +1,11 @@
 #include "interpreter.h"
 Token Interpreter::get_next_token()
 {
-        
+
     int start_pos = current_pos;
     Token next;
 
-    if(!in_bounds())
+    if (!in_bounds())
         return next;
 
     // Check for end of file
@@ -41,7 +41,6 @@ Token Interpreter::get_next_token()
         next.value.ival = std::stoi(next.str_value);
 
         // If current position is not larger than end of string, we have to
-
     }
 
     return next;
@@ -51,53 +50,65 @@ Token Interpreter::expect(TokenType type)
     // What token to expect?
     // If the token which is read has a different type, an error is generated
     Token next = get_next_token();
-    //std::cout<<next<<"\n";
+    // std::cout<<next<<"\n";
     if (next.type != type)
         // TODO: Implement a custom exception class
         throw std::runtime_error("Unexpected token!");
     return next;
 }
-void Interpreter::expression()
+int Interpreter::compute(int lhs, int rhs, Token op)
 {
-    try
+
+    int result;
+
+    switch (op.value.opval)
     {
-        // Looks for the pattern INTEGER OPERATOR INTEGER and gives the result
-        Token token;
-        int lhs, rhs, result;
-        char op;
+    case '+':
+        result = lhs + rhs;
+        break;
+    case '-':
+        result = lhs - rhs;
+        break;
+    case '*':
+        result = lhs * rhs;
+        break;
+    case '/':
+        result = lhs / rhs;
+        break;
+    default:
+        std::cerr << "Unkown operator " << op << "\n";
+        throw std::runtime_error("Unknown operator");
+        break;
+    }
+    return result;
+}
+int Interpreter::expression()
+{
+    // Looks for the pattern INTEGER OPERATOR INTEGER and gives the result
+    // To handle expressions such as 3 + 2 - 4 + 5, etc
+    // Start solving from the left
+    // 3+2 ===> 5
+    // 5 + 2 - 4 + 5
+    // 5 + 2 ===> 7
+    // 7 - 4 + 5
+    // And so on
 
-        token = expect(TOKEN_INTEGER);
-        lhs = token.value.ival;
+    // To do this, set the value of result to lhs after the first sequence
+    // is found
+    Token token, op;
+    int rhs, result = 0;
 
-        token = expect(TOKEN_OPERATOR);
-        op = token.value.opval;
+    token = expect(TOKEN_INTEGER);
+    result = token.value.ival;
 
+    while (token.type != TOKEN_EOF)
+    {
+        if (!in_bounds())
+            break;
+        op = expect(TOKEN_OPERATOR);
         token = expect(TOKEN_INTEGER);
         rhs = token.value.ival;
-
-        switch (op)
-        {
-        case '+':
-            result = lhs + rhs;
-            break;
-        case '-':
-            result = lhs - rhs;
-            break;
-        case '*':
-            result = lhs * rhs;
-            break;
-        case '/':
-            result = lhs / rhs;
-            break;
-        default:
-            std::cerr << "Unkown operator " << op << "\n";
-            throw std::runtime_error("Unknown operator");
-            break;
-        }
-        std::cout << result << "\n";
+        result = compute(result, rhs, op);
     }
-    catch (std::exception &e)
-    {
-        std::cerr <<e.what()<< " - Syntax error!\n";
-    }
+    return result;
 }
