@@ -1,29 +1,24 @@
 #pragma once
-#include "token.h"
+#include "lexer.h"
 #include <iostream>
 #include <string>
 
 class Interpreter
 {
   private:
-    std::string source;
-    int current_pos;
-    bool in_bounds()
-    {
-        if (current_pos >= source.size())
-            return false;
-        return true;
-    }
+    Lexer lexer;
+    // Check if the token is of the type
+    void validate(const Token& token, TokenType type);
 
   public:
-    Interpreter(const std::string &source) : source(source), current_pos(0) {}
-    Token get_next_token();
-    void skip_whitespaces(){
-        while(current_pos < source.length() && std::isspace(source[current_pos])){
-            current_pos++;
-        }
-    }
+    // Initialize the interpreter with a lexer on a source file
+    Interpreter(const Lexer &lexer) : lexer(lexer) {}
+    // Parses and returns the result of a mathematical expression from the current token
+    // Incase of error, raises an logic_error
+    // expression = term, {"+" | "-", term}
     int expression();
-    Token expect(TokenType type);
-    int compute(int lhs, int rhs, Token op);
+    // term = factor, {"*", "/", factor}
+    int term();
+    // factor = integer
+    int factor();
 };

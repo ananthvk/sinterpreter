@@ -1,14 +1,23 @@
 #include "token.h"
-std::string get_token_name(const Token& token){
-    switch(token.type){
+std::string get_token_name(TokenType type){
+    switch(type){
         case TOKEN_EOF: 
             return "EOF";
             break;
         case TOKEN_INTEGER:
             return "INTEGER";
             break;
-        case TOKEN_OPERATOR:
-            return "OPERATOR";
+        case TOKEN_FSLASH:
+            return "FORWARD SLASH";
+            break;
+        case TOKEN_STAR:
+            return "STAR";
+            break;
+        case TOKEN_PLUS:
+            return "PLUS";
+            break;
+        case TOKEN_MINUS:
+            return "MINUS";
             break;
         default:
             return "UNKNOWN";
@@ -17,5 +26,5 @@ std::string get_token_name(const Token& token){
 }
 
 std::ostream& operator<<(std::ostream &os, const Token& token){
-    return os<<"Token<"<<get_token_name(token)<<" "<<token.str_value<<">";
+    return os<<"Token<"<<get_token_name(token.type)<<" "<<token.str_value<<">";
 }

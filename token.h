@@ -5,7 +5,10 @@
 enum TokenType{
     TOKEN_EOF,
     TOKEN_INTEGER,
-    TOKEN_OPERATOR,
+    TOKEN_PLUS,
+    TOKEN_MINUS,
+    TOKEN_STAR,
+    TOKEN_FSLASH
 };
 
 // Represents a token, implemented as a tagged union with type containing the token type
@@ -18,7 +21,6 @@ struct Token{
         char cval;
         double fval;
         bool bval;
-        char opval;
     } value;
     // By default the type of token is EOF with value 0
     Token(){
@@ -29,5 +31,5 @@ struct Token{
 };
 
 // Returns the string representation of the token type
-std::string get_token_name(const Token& token);
+std::string get_token_name(TokenType token);
 std::ostream& operator<<(std::ostream &os, const Token& token);

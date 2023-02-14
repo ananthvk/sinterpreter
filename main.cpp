@@ -1,6 +1,6 @@
 #include<iostream>
+#include"lexer.h"
 #include "token.h"
-#include "interpreter.h"
 int main()
 {
     std::string line;
@@ -8,23 +8,6 @@ int main()
     while(std::getline(std::cin, line)){
         if(line == "exit")
             break;
-        Interpreter inter(line);
-        try{
-        std::cout<<inter.expression()<<"\n";
-        }
-        catch(std::exception &e){
-            std::cerr<<e.what()<<" Syntax Error!\n";
-        }
-        std::cout<<">>";
-        /*
-        Token tok = inter.get_next_token();
-        while(tok.type !=TOKEN_EOF)
-        {
-            std::cout<<tok<<"\n";
-            tok = inter.get_next_token();
-        }
-        */
-        
     }
     
 }
