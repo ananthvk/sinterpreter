@@ -4,13 +4,13 @@
 int main()
 {
     std::string line;
-    //std::cout << "Sinterpreter - type 'exit' to quit\n";
+    // std::cout << "Sinterpreter - type 'exit' to quit\n";
     while (std::getline(std::cin, line))
     {
         if (line == "exit")
             break;
         // If line is emtpy, continue so that line.front() does not cause a UB
-        if(line.empty())
+        if (line.empty())
             continue;
         // To handle single comments
         if (line.front() == '#')
@@ -34,6 +34,6 @@ int main()
         {
             std::cout << "System error:" << e.what() << "\n";
         }
-        //std::cout << ">>";
+        // std::cout << ">>";
     }
 }

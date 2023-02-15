@@ -41,7 +41,6 @@ bool Lexer::scan_operator(Token &token)
         token.type = TOKEN_RPAREN;
         is_successful = true;
         break;
-
     }
     // If the operator was read, increment index in the source by one
     if (is_successful)
@@ -63,8 +62,11 @@ Token Lexer::next()
         return Token();
 
     // Process operators such as +, -, etc
+
     if (scan_operator(next_token))
+    {
         return next_token;
+    }
 
     // Process integers next
     // nonzero digit = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
