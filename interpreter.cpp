@@ -8,7 +8,14 @@ void Interpreter::validate(const Token& token, TokenType type)
 
 int Interpreter::factor()
 {
+    // factor = integer | "(", expression, ")"
     auto next = lexer.next();
+    if(next.type == TOKEN_LPAREN){
+        auto expr = expression();
+        next = lexer.next();
+        validate(next, TOKEN_RPAREN);
+        return expr;
+    }
     validate(next, TOKEN_INTEGER);
     return next.value.ival;
 }

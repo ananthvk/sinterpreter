@@ -31,6 +31,17 @@ bool Lexer::scan_operator(Token &token)
         token.type = TOKEN_STAR;
         is_successful = true;
         break;
+    case '(':
+        token.str_value = ")";
+        token.type = TOKEN_LPAREN;
+        is_successful = true;
+        break;
+    case ')':
+        token.str_value = ")";
+        token.type = TOKEN_RPAREN;
+        is_successful = true;
+        break;
+
     }
     // If the operator was read, increment index in the source by one
     if (is_successful)

@@ -19,6 +19,12 @@ std::string get_token_name(TokenType type){
         case TOKEN_MINUS:
             return "MINUS";
             break;
+        case TOKEN_LPAREN:
+            return "LPAREN";
+            break;
+        case TOKEN_RPAREN:
+            return "RPAREN";
+            break;
         default:
             return "UNKNOWN";
             break;

@@ -8,7 +8,9 @@ enum TokenType{
     TOKEN_PLUS,
     TOKEN_MINUS,
     TOKEN_STAR,
-    TOKEN_FSLASH
+    TOKEN_FSLASH,
+    TOKEN_LPAREN,
+    TOKEN_RPAREN
 };
 
 // Represents a token, implemented as a tagged union with type containing the token type
