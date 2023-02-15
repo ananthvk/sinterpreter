@@ -21,4 +21,6 @@ class Interpreter
     int term();
     // factor = integer
     int factor();
+    // Simple compute method between two values
+    int compute(int l, int r, Token op);
 };

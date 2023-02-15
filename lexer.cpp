@@ -2,7 +2,7 @@
 
 int Lexer::srclength() { return source.size(); }
 
-bool Lexer::has_next() { return current_pos < srclength(); }
+bool Lexer::has_next() { return is_unget || current_pos < srclength(); }
 
 bool Lexer::scan_operator(Token &token)
 {
@@ -33,13 +33,18 @@ bool Lexer::scan_operator(Token &token)
         break;
     }
     // If the operator was read, increment index in the source by one
-    if(is_successful)
+    if (is_successful)
         current_pos++;
     return is_successful;
 }
 
 Token Lexer::next()
 {
+    if (is_unget)
+    {
+        is_unget = false;
+        return ungetted;
+    }
     Token next_token;
     skip_spaces();
 
@@ -47,7 +52,7 @@ Token Lexer::next()
         return Token();
 
     // Process operators such as +, -, etc
-    if(scan_operator(next_token))
+    if (scan_operator(next_token))
         return next_token;
 
     // Process integers next
@@ -72,4 +77,13 @@ void Lexer::skip_spaces()
 {
     while (has_next() && std::isspace(source[current_pos]))
         current_pos++;
+}
+
+void Lexer::unget(Token token)
+{
+    if (is_unget)
+        throw std::logic_error(
+            "Only one unget at a time is supported ! Call next() before unget");
+    is_unget = true;
+    ungetted = token;
 }
