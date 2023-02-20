@@ -9,17 +9,20 @@ void Interpreter::validate(const Token &token, TokenType type)
 
 int Interpreter::factor()
 {
-    // factor = integer | "(", expression, ")"
+    // factor = {"+" | "-"} integer | {"+" | "-"} "(", expression, ")"
+    int sign = get_plus_minus_equiv();
+    if(!(sign == 1 || sign == -1))
+        sign = 1;
     auto next = lexer.next();
     if (next.type == TOKEN_LPAREN)
     {
         auto expr = expression();
         next = lexer.next();
         validate(next, TOKEN_RPAREN);
-        return expr;
+        return expr*sign;
     }
     validate(next, TOKEN_INTEGER);
-    return next.value.ival;
+    return next.value.ival*sign;
 }
 int Interpreter::term()
 {
@@ -30,8 +33,12 @@ int Interpreter::term()
         auto op = lexer.next();
         if (op.type == TOKEN_STAR || op.type == TOKEN_FSLASH)
         {
+            int sign = get_plus_minus_equiv();
+            if(!(sign == 1 || sign == -1))
+                sign = 1;
             auto rhs = factor();
-            lhs = compute(lhs, rhs, op.type);
+            lhs = compute(lhs, sign*rhs, op.type);
+            
         }
         else
         {

@@ -1,3 +1,5 @@
+# TODO - program does not handle fractional divisions, all divisions are treated as integer
+# divisions which give wrong answer when tested here.
 # Simple tests, with just numbers
 0
 1
@@ -78,3 +80,15 @@
 
 # With parenthesis
 5 + (4*3-2)*6
+5 * -(4*5+6*-8)
+
+# Multiple plus and minus
+3 - 2 - - 2 - - - - - - - - - - - - - - 1
+4 +  + + ++ + + + ++ +3
+3 + - + - + - + - + - 5
+4 + - + 6
+9 + 8
+9 - + - 10
+3241 - 5 * 10
+4 * 5 * 5 - - - 5 * 3 * ---2
+4 * 8*---++++++++++----(1 * ------3)
