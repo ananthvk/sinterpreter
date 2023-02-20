@@ -1,4 +1,4 @@
-# S mathematical interpreter
+# S interpreter
 This is a small on going project of mine to understand how interpreters, parsing and compilers work.
 I am following tutorials from [https://ruslanspivak.com/lsbasi-part1/](https://ruslanspivak.com/lsbasi-part1/) and
 [https://craftinginterpreters.com/contents.html](https://craftinginterpreters.com/contents.html).
@@ -16,6 +16,21 @@ Here is a list of files and a brief gist of what it contains.
 `interpreter.h` and `interpreter.cpp` has the definition and implementation for the parser and the interpreter.  This project uses a recursive descent parser for parsing and contains various methods which give the non terminals of the language.
 
 `test.py` and `test_random.py` performs some tests on the interpreter by validating the result with the result of Python's `eval()` function.
+
+# How to run
+On linux based systems
+```
+$ make
+$ ./main
+```
+Customize the compiler flags, and compiler as you wish in the `Makefile`.
+
+Dependencies (for the default Makefile)
+```
+clang
+asan
+make
+```
 
 # TODO
 1. Extend this interpreter to handle floats, and larger integers.
