@@ -1,5 +1,5 @@
 CXX=clang++
-CXXFLAGS=-W -Wall -Wextra -pedantic -gdwarf-4 -O0 -fsanitize=address,undefined -pedantic -Wno-sign-conversion -Wno-sign-compare
+CXXFLAGS=-W -Wall -Wextra -pedantic -gdwarf-4 -O0 -fsanitize=address,undefined  -pedantic -Wno-sign-conversion -Wno-sign-compare
 OBJ_DIR=build
 
 build: $(OBJ_DIR)/token.o $(OBJ_DIR)/lexer.o $(OBJ_DIR)/main.o $(OBJ_DIR)/interpreter.o
@@ -23,3 +23,9 @@ tokenizer:$(OBJ_DIR)/token.o $(OBJ_DIR)/lexer.o tokenizer.cpp
 
 run: build
 	./main
+
+clean:
+	rm -f build/*
+	rm main
+
+rebuild: clean build

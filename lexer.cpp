@@ -2,7 +2,7 @@
 
 int Lexer::srclength() { return source.size(); }
 
-bool Lexer::has_next() { return is_unget || current_pos < srclength(); }
+bool Lexer::has_next() { return (!ungetted.empty()) || current_pos < srclength(); }
 
 bool Lexer::scan_operator(Token &token)
 {
@@ -50,10 +50,11 @@ bool Lexer::scan_operator(Token &token)
 
 Token Lexer::next()
 {
-    if (is_unget)
+    if (!ungetted.empty())
     {
-        is_unget = false;
-        return ungetted;
+        auto top = ungetted.top();
+        ungetted.pop();
+        return top;
     }
     Token next_token;
     skip_spaces();
@@ -94,9 +95,5 @@ void Lexer::skip_spaces()
 
 void Lexer::unget(Token token)
 {
-    if (is_unget)
-        throw std::logic_error(
-            "Only one unget at a time is supported ! Call next() before unget");
-    is_unget = true;
-    ungetted = token;
+    ungetted.push(token); 
 }

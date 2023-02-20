@@ -23,7 +23,7 @@ int Interpreter::factor()
 }
 int Interpreter::term()
 {
-    // term = factor, {"*", "/", factor}
+    // term = factor, {"*", "/", {"-" | "+"}factor}
     auto lhs = factor();
     while (lexer.has_next())
     {
@@ -31,7 +31,7 @@ int Interpreter::term()
         if (op.type == TOKEN_STAR || op.type == TOKEN_FSLASH)
         {
             auto rhs = factor();
-            lhs = compute(lhs, rhs, op);
+            lhs = compute(lhs, rhs, op.type);
         }
         else
         {
@@ -43,29 +43,48 @@ int Interpreter::term()
     return lhs;
 }
 
+int Interpreter::get_plus_minus_equiv()
+{
+    Token next = lexer.next();
+
+    if (!(next.type == TOKEN_PLUS || next.type == TOKEN_MINUS))
+    {
+        lexer.unget(next);
+        return 0; // To signify an error
+    }
+
+    int sign = 1;
+    while (next.type == TOKEN_PLUS || next.type == TOKEN_MINUS)
+    {
+        if (next.type == TOKEN_MINUS)
+            sign *= -1;
+
+        next = lexer.next();
+    }
+    lexer.unget(next);
+    return sign;
+}
 int Interpreter::expression()
 {
-    // expression = term, {"+" | "-", term}
+    // expression = term, {{"+" | "-"}, term}
     auto lhs = term();
     while (lexer.has_next())
     {
-        auto op = lexer.next();
-        if (op.type == TOKEN_PLUS || op.type == TOKEN_MINUS)
+        auto sign = get_plus_minus_equiv();
+        if (sign == 1 || sign == -1)
         {
             auto rhs = term();
-            lhs = compute(lhs, rhs, op);
+            lhs = compute(lhs, rhs, sign==1?TOKEN_PLUS:TOKEN_MINUS);
         }
-        else
-        {
-            lexer.unget(op);
-            return lhs;
+        else{
+            break;
         }
     }
     return lhs;
 }
-int Interpreter::compute(int l, int r, Token op)
+int Interpreter::compute(int l, int r, TokenType op)
 {
-    switch (op.type)
+    switch (op)
     {
     case TOKEN_PLUS:
         return l + r;
@@ -77,6 +96,6 @@ int Interpreter::compute(int l, int r, Token op)
         return l / r;
     default:
         throw std::runtime_error("Expected operator(+, -, /, *),found " +
-                                 get_token_name(op.type));
+                                 get_token_name(op));
     }
 }

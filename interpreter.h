@@ -22,5 +22,7 @@ class Interpreter
     // factor = integer
     int factor();
     // Simple compute method between two values
-    int compute(int l, int r, Token op);
+    int compute(int l, int r, TokenType op);
+    // Gets the equivalent of multiple pluses and minuses.
+    int get_plus_minus_equiv();
 };

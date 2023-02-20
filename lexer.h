@@ -1,6 +1,7 @@
 #pragma once
 #include "token.h"
 #include <string>
+#include <stack>
 
 // A class which represents a lexer and produces tokens from the source file
 class Lexer
@@ -10,8 +11,7 @@ class Lexer
     // be read
     int current_pos;
     std::string source;
-    Token ungetted;
-    bool is_unget;
+    std::stack<Token> ungetted;
     // If any operator is found, sets it to the token reference and returns true
     // else returns false
     bool scan_operator(Token &token);
@@ -20,10 +20,10 @@ class Lexer
 
   public:
     // Default constructor
-    Lexer() : current_pos(0), source(""), ungetted(), is_unget(false) {}
+    Lexer() : current_pos(0), source(""), ungetted(){}
     // Constructor to set the source program
     Lexer(const std::string &source)
-        : current_pos(0), source(source), ungetted(), is_unget(false)
+        : current_pos(0), source(source), ungetted()
     {
     }
     // Returns the length of the source file
